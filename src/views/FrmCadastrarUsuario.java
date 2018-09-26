@@ -3,6 +3,9 @@ package views;
 import controle.ConexaoCadastroUsuario;
 import java.awt.Color;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.Usuario;
 
@@ -36,7 +39,6 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -323,7 +325,11 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
     private void btnCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUsuarioActionPerformed
         // Quando o botão btnCadastrarUsuario for clicado
         if (verificarUsuario()) {
-            ConexaoCadastroUsuario.cadastrarNovoUsuario();
+            try {
+                ConexaoCadastroUsuario.cadastrarNovoUsuario();
+            } catch (SQLException ex) {
+                Logger.getLogger(FrmCadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             limparCampos();
         }
     }//GEN-LAST:event_btnCadastrarUsuarioActionPerformed
@@ -438,6 +444,7 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "Campo vazio não é permitido");
+            limparCampos();
             return false;
         }
     }
