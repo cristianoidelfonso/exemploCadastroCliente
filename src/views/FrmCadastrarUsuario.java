@@ -189,6 +189,7 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
         btnPesquisar.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         btnPesquisar.setForeground(new java.awt.Color(51, 51, 51));
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.setToolTipText("Informe um \"Login\" para pequisar um usuário.");
         btnPesquisar.setBorder(null);
         btnPesquisar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPesquisar.setFocusable(false);
@@ -321,9 +322,10 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
      */
     private void btnCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUsuarioActionPerformed
         // Quando o botão btnCadastrarUsuario for clicado
-        verificarUsuario();
-        ConexaoCadastroUsuario.cadastrarNovoUsuario();
-        limparCampos();
+        if (verificarUsuario()) {
+            ConexaoCadastroUsuario.cadastrarNovoUsuario();
+            limparCampos();
+        }
     }//GEN-LAST:event_btnCadastrarUsuarioActionPerformed
     //--------------------------------------------------------------------------
     private void btnCadastrarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarUsuarioMouseEntered
@@ -396,9 +398,10 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // Quando o botão for clicado
-        verificarUsuario();
-        ConexaoCadastroUsuario.atualizarUsuario();
-        limparCampos();
+        if (verificarUsuario()) {
+            ConexaoCadastroUsuario.atualizarUsuario();
+            limparCampos();
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnPesquisarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesquisarMouseEntered
@@ -422,7 +425,7 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
     /**
      * Método que verifica se existe campo vazio no formulario de cadastro
      */
-    private void verificarUsuario() {
+    private boolean verificarUsuario() {
         // Quando clicar no botao, chama o metodo da classe ConexaoCadastroUsuario para cadastrar um novo usuario do sistema
         if (!txtNomeUsuario.getText().equals("")
                 && !txtCpfUsuario.getText().equals("")
@@ -432,8 +435,10 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
             Usuario.cpf = txtCpfUsuario.getText();
             Usuario.login = txtLoginUsuario.getText();
             Usuario.senha = txtSenhaUsuario.getText();
+            return true;
         } else {
             JOptionPane.showMessageDialog(null, "Campo vazio não é permitido");
+            return false;
         }
     }
     //--------------------------------------------------------------------------
@@ -449,17 +454,21 @@ public class FrmCadastrarUsuario extends javax.swing.JFrame {
         txtNomeUsuario.requestFocus();
     }
     //--------------------------------------------------------------------------
-    
+
     /**
      * Método para pesquisar um usuário
      */
-    private void pesquisar(){
+    private void pesquisar() {
         Usuario.login = txtLoginUsuario.getText();
-        ConexaoCadastroUsuario.pesquisarUsuario();
-        txtNomeUsuario.setText(Usuario.nome);
-        txtCpfUsuario.setText(Usuario.cpf);
-        txtLoginUsuario.setText(Usuario.login);
-        txtSenhaUsuario.setText(Usuario.senha);
+        if (ConexaoCadastroUsuario.pesquisarUsuario()) {
+            txtNomeUsuario.setText(Usuario.nome);
+            txtCpfUsuario.setText(Usuario.cpf);
+            txtLoginUsuario.setText(Usuario.login);
+            txtSenhaUsuario.setText(Usuario.senha);
+        } else {
+            limparCampos();
+            txtLoginUsuario.requestFocus();
+        }
     }
 //==============================================================================    
 
