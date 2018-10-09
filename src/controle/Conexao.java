@@ -16,9 +16,6 @@ public class Conexao {
     
     public static Connection conn = null;
     
-    //public static void main(String[] args) {
-        //System.out.println("Conectando ao banco de dados");
-    
     public static Connection getConexao(){
         
         try {
