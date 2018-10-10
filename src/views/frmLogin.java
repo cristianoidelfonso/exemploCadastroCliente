@@ -12,7 +12,7 @@ import models.Usuario;
 
 public class frmLogin extends javax.swing.JFrame {
 
-    private Connection con = null;
+    private Connection conn = null;
 
     public frmLogin() {
         initComponents();
@@ -208,8 +208,8 @@ public class frmLogin extends javax.swing.JFrame {
 
         try {
             String sql = "SELECT * FROM usuario WHERE login = ? and senha = ?";
-            con = Conexao.getConexao();
-            PreparedStatement pst = con.prepareStatement(sql);
+            conn = Conexao.getConexao();
+            PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, Usuario.login);
             pst.setString(2, Usuario.senha);
 
